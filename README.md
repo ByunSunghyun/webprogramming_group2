@@ -1,4 +1,6 @@
-# webprogramming_group2
+# Testing Branch
+
+# Use this for testing new changes to the code
 
 To Download
 run `git clone 'url'`

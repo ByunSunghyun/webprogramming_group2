@@ -147,6 +147,31 @@
         material="color: orange"
       ></a-entity>
 
+      <a-entity position="0 1.6 -3">
+        <!-- Easy -->
+        <a-box position="-1 0 0" width="1" height="0.5" depth="0.1" color="green" clickable></a-box>
+        <a-text position="-1 0.15 0" align="center" value="Easy"></a-text>
+      
+        <!-- Normal 버튼 -->
+        <a-box position="0 0 0" width="1" height="0.5" depth="0.1" color="yellow" clickable></a-box>
+        <a-text position="0 0.15 0" align="center" value="Normal"></a-text>
+      
+        <!-- Hard 버튼 -->
+        <a-box position="1 0 0" width="1" height="0.5" depth="0.1" color="red" clickable></a-box>
+        <a-text position="1 0.15 0" align="center" value="Hard"></a-text>
+      </a-entity>
+<script>
+  AFRAME.registerComponent("clickable", {
+    init: function () {
+      var el = this.el;
+      el.addEventListener("click", function () {
+        // 버튼이 클릭되었을 때 처리할 로직을 작성하세요.
+        var difficulty = el.getAttribute("color");
+        console.log("Selected difficulty:", difficulty);
+      });
+    }
+  });
+</script>
       <a-entity
         class="target"
         target="healthPoints: 1"
