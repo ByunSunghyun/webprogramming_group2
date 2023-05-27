@@ -215,3 +215,98 @@ AFRAME.registerComponent("shooter", {
     el.setAttribute("shooter", "activeBulletType", evt.detail);
   },
 });
+
+/* solve quiz */
+
+var korFont =
+  "https://raw.githubusercontent.com/myso-kr/aframe-fonts-korean/master/fonts/ofl/nanumgothic/NanumGothic-Regular.json";
+
+AFRAME.registerComponent("quiz-screen", {
+  init: function () {
+    // create a new content entity
+    let questions = [
+      "지금 너무 답답해",
+      "나 내일 면접 보러 가기로 했어",
+      "너한테 실망이야",
+    ];
+    let qanswerA = ["담배 피우러 갈래?", "파이팅", "어의가 없네"];
+    let qanswerB = ["담배 피러 갈래?", "화이팅", "어이가 없네"];
+    let correctAnswer = [0, 0];
+    let quizSize = 3;
+    var quizIndex = 0;
+    var buttonA = document.createElement("a-box");
+    var buttonB = document.createElement("a-box");
+    var question = document.createElement("a-text");
+    var answerA = document.createElement("a-text");
+    var answerB = document.createElement("a-text");
+    var answerAText = document.createElement("a-text");
+    var answerBText = document.createElement("a-text");
+
+    // set the position
+    buttonA.setAttribute("position", { x: -0.8, y: 0.3, z: -3 });
+    buttonB.setAttribute("position", { x: 0.2, y: 0.3, z: -3 });
+    question.setAttribute("position", { x: -1, y: 1.6, z: -3 });
+    answerA.setAttribute("position", { x: -1, y: 1.3, z: -3 });
+    answerB.setAttribute("position", { x: -1, y: 1.0, z: -3 });
+    answerAText.setAttribute("position", { x: -0.8, y: 0.35, z: -2.75 });
+    answerBText.setAttribute("position", { x: 0.2, y: 0.35, z: -2.75 });
+
+    // set the buttonA
+    buttonA.setAttribute("color", "#0080FF");
+    buttonA.setAttribute("width", "0.8");
+    buttonA.setAttribute("height", "0.5");
+    buttonA.setAttribute("depth", "0.5");
+
+    // set the buttonB
+    buttonB.setAttribute("color", "#0080FF");
+    buttonB.setAttribute("width", "0.8");
+    buttonB.setAttribute("height", "0.5");
+    buttonB.setAttribute("depth", "0.5");
+
+    // set the question "Question: 아래 중 알맞은 것을 선택"
+    question.setAttribute("value", questions[quizIndex]);
+    question.setAttribute("font", korFont);
+    question.setAttribute("shader", "msdf");
+    question.setAttribute("color", "#000000");
+    question.setAttribute("width", "4");
+
+    // set the answerA
+    answerA.setAttribute("value", qanswerA[quizIndex]);
+    answerA.setAttribute("font", korFont);
+    answerA.setAttribute("shader", "msdf");
+    answerA.setAttribute("color", "#000000");
+    answerA.setAttribute("width", "4");
+
+    // set the answerB
+    answerB.setAttribute("value", qanswerB[quizIndex]);
+    answerB.setAttribute("font", korFont);
+    answerB.setAttribute("shader", "msdf");
+    answerB.setAttribute("color", "#000000");
+    answerB.setAttribute("width", "4");
+
+    // set the answerAText
+    answerAText.setAttribute("value", "A");
+    answerAText.setAttribute("font", korFont);
+    answerAText.setAttribute("shader", "msdf");
+    answerAText.setAttribute("color", "#000000");
+    answerAText.setAttribute("width", "4");
+    answerAText.setAttribute("align", "center");
+
+    // set the answerBText
+    answerBText.setAttribute("value", "B");
+    answerBText.setAttribute("font", korFont);
+    answerBText.setAttribute("shader", "msdf");
+    answerBText.setAttribute("color", "#000000");
+    answerBText.setAttribute("width", "4");
+    answerBText.setAttribute("align", "center");
+
+    // add the content to the scene
+    this.el.sceneEl.appendChild(buttonA);
+    this.el.sceneEl.appendChild(buttonB);
+    this.el.sceneEl.appendChild(question);
+    this.el.sceneEl.appendChild(answerA);
+    this.el.sceneEl.appendChild(answerB);
+    this.el.sceneEl.appendChild(answerAText);
+    this.el.sceneEl.appendChild(answerBText);
+  },
+});

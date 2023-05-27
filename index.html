@@ -123,6 +123,7 @@
       ></a-plane>
 
       <a-text
+        id="title"
         value="Hangul Spelling Game 안녕!"
         color="#000000"
         shader="msdf"
@@ -149,29 +150,58 @@
 
       <a-entity position="0 1.6 -3">
         <!-- Easy -->
-        <a-box position="-1 0 0" width="1" height="0.5" depth="0.1" color="green" clickable></a-box>
-        <a-text position="-1 0.15 0" align="center" value="Easy"></a-text>
-      
+        <!-- <a-box
+          position="-1 0 0"
+          width="1"
+          height="0.5"
+          depth="0.1"
+          color="green"
+          clickable
+        ></a-box>
+        <a-text position="-1 0.15 0" align="center" value="Easy"></a-text> -->
+
         <!-- Normal 버튼 -->
-        <a-box position="0 0 0" width="1" height="0.5" depth="0.1" color="yellow" clickable></a-box>
-        <a-text position="0 0.15 0" align="center" value="Normal"></a-text>
-      
+        <!-- <a-box
+          position="0 0 0"
+          width="1"
+          height="0.5"
+          depth="0.1"
+          color="yellow"
+          clickable
+        ></a-box>
+        <a-text
+          position="0 0.15 0"
+          align="center"
+          value="Normal"
+          color="#000000"
+          shader="msdf"
+          font="https://raw.githubusercontent.com/myso-kr/aframe-fonts-korean/master/fonts/ofl/nanumgothic/NanumGothic-Regular.json"
+        ></a-text> -->
+
         <!-- Hard 버튼 -->
-        <a-box position="1 0 0" width="1" height="0.5" depth="0.1" color="red" clickable></a-box>
-        <a-text position="1 0.15 0" align="center" value="Hard"></a-text>
+        <!-- <a-box
+          position="1 0 0"
+          width="1"
+          height="0.5"
+          depth="0.1"
+          color="red"
+          clickable
+        ></a-box>
+        <a-text position="1 0.15 0" align="center" value="Hard"></a-text> -->
       </a-entity>
-<script>
-  AFRAME.registerComponent("clickable", {
-    init: function () {
-      var el = this.el;
-      el.addEventListener("click", function () {
-        // 버튼이 클릭되었을 때 처리할 로직을 작성하세요.
-        var difficulty = el.getAttribute("color");
-        console.log("Selected difficulty:", difficulty);
-      });
-    }
-  });
-</script>
+
+      <script>
+        AFRAME.registerComponent("clickable", {
+          init: function () {
+            var el = this.el;
+            el.addEventListener("click", function () {
+              // 버튼이 클릭되었을 때 처리할 로직을 작성하세요.
+              var difficulty = el.getAttribute("color");
+              console.log("Selected difficulty:", difficulty);
+            });
+          },
+        });
+      </script>
       <a-entity
         class="target"
         target="healthPoints: 1"
@@ -181,10 +211,10 @@
       ></a-entity>
 
       <!-- Add gltf model-->
-      <a-entity gltf-model="#myModel" position="1 1 -2"></a-entity>
+      <!-- <a-entity gltf-model="#myModel" position="1 1 -2"></a-entity> -->
 
       <!-- Add Keyboard in VR-->
-      <a-text
+      <!-- <a-text
         id="input"
         font="dejavu"
         color="#000"
@@ -198,84 +228,15 @@
         position="-2 1.6 -0.5"
         a-keyboard="baseTexture: base.jpg; keyTexture: key.jpeg;"
       >
-      </a-entity>
+      </a-entity> -->
 
-      <!--Quiz Screen-->
-      <a-entity position="0 2 -3">
-        <a-text
-          value="Quiz Screen"
-          color="#000000"
-          shader="msdf"
-          width="5"
-        ></a-text>
-      </a-entity>
-      <a-entity position="-1 1.6 -3">
-        <a-text
-          color="#000000"
-          shader="msdf"
-          value="Question: 아래 중 알맞은 것을 선택"
-          position="-1 1.6 -3"
-          font="https://raw.githubusercontent.com/myso-kr/aframe-fonts-korean/master/fonts/ofl/nanumgothic/NanumGothic-Regular.json"
-          width="4"
-        ></a-text>
-      </a-entity>
-      <a-entity position="-1 1.3 -3">
-        <a-text
-          color="#000000"
-          shader="msdf"
-          value="A. 그런 것 같아"
-          font="https://raw.githubusercontent.com/myso-kr/aframe-fonts-korean/master/fonts/ofl/nanumgothic/NanumGothic-Regular.json"
-          width="4"
-        ></a-text>
-      </a-entity>
-      <a-entity position="-1 1.0 -3">
-        <a-text
-          value="B. 그런 것 갔아"
-          color="#000000"
-          shader="msdf"
-          font="https://raw.githubusercontent.com/myso-kr/aframe-fonts-korean/master/fonts/ofl/nanumgothic/NanumGothic-Regular.json"
-          width="4"
-        ></a-text>
-      </a-entity>
-      <a-entity position="-0.5 -1.4 -3">
-        <a-text id="result" color="#000000" shader="msdf" width="5"></a-text>
-      </a-entity>
-      <a-entity position="-0.8 0.3 -3">
-        <a-box
-          id="buttonA"
-          class="button"
-          color="#0080FF"
-          width="0.8"
-          height="0.5"
-          depth="0.05"
-        ></a-box>
-        <a-text
-          value="A"
-          color="#000000"
-          shader="msdf"
-          align="center"
-          width="2"
-          position="0 0.1 0.025"
-        ></a-text>
-      </a-entity>
-      <a-entity position="0.2 0.3 -3">
-        <a-box
-          id="buttonB"
-          class="button"
-          color="#0080FF"
-          width="0.8"
-          height="0.5"
-          depth="0.05"
-        ></a-box>
-        <a-text
-          value="B"
-          color="#000000"
-          shader="msdf"
-          align="center"
-          width="2"
-          position="0 0.1 0.025"
-        ></a-text>
-      </a-entity>
+      <a-entity quiz-screen></a-entity>
+      <a-text
+        value="Quiz Screen"
+        color="#000000"
+        shader="msdf"
+        width="5"
+      ></a-text>
 
       <a-camera id="camera" wasd-controls shooter shoot>
         <!-- Crosshair -->
