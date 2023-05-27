@@ -49,12 +49,74 @@
         },
       });
 
+      //score
+      AFRAME.registerComponent("score", {
+        schema: {
+          score: { type: "number", default: 0 },
+        },
+        init: function () {
+          this.scoreState = this.data.score;
+          this.scoreText = document.createElement("a-text");
+          this.scoreText.setAttribute("color", "black");
+          this.el.appendChild(this.scoreText);
+          this.updateScoreDisplay();
+
+          var hitHandler = this.el.sceneEl.querySelector("[hit-handler]");
+          hitHandler.addEventListener("hit", () => {
+            this.scoreState += 100;
+            this.updateScoreDisplay();
+          });
+
+          var leaderboard = this.el.sceneEl.querySelector("[leaderboard]");
+          this.el.sceneEl.addEventListener("time-up", () => {
+            leaderboard.components.leaderboard.updateLeaderboard(
+              this.scoreState
+            );
+            this.scoreState = 0; // Reset the score to 0
+            this.updateScoreDisplay();
+          });
+        },
+
+        updateScoreDisplay: function () {
+          this.scoreText.setAttribute("value", "Score: " + this.scoreState);
+        },
+      });
+
+      //leaderboard
+      AFRAME.registerComponent("leaderboard", {
+        init: function () {
+          this.leaderboard = [];
+          this.leaderboardText = document.createElement("a-text");
+          this.leaderboardText.setAttribute("color", "black");
+          this.el.appendChild(this.leaderboardText);
+        },
+        updateLeaderboard: function (score) {
+          // Add the score to the leaderboard
+          this.leaderboard.push(score);
+
+          // Sort the leaderboard in descending order
+          this.leaderboard.sort((a, b) => b - a);
+
+          // Limit the leaderboard to the top 5 scores
+          this.leaderboard = this.leaderboard.slice(0, 5);
+
+          // Generate the leaderboard text
+          var leaderboardText = "Leaderboard\n";
+          for (var i = 0; i < this.leaderboard.length; i++) {
+            leaderboardText += i + 1 + ". " + this.leaderboard[i] + "\n";
+          }
+
+          // Update the leaderboard text element
+          this.leaderboardText.setAttribute("value", leaderboardText);
+        },
+      });
+
       /**
        * Countdown Timer Component
        */
       AFRAME.registerComponent("countdown-timer", {
         schema: {
-          time: { type: "number", default: 3 },
+          time: { type: "number", default: 15 },
         },
         init: function () {
           this.timeRemaining = this.data.time;
@@ -149,29 +211,50 @@
 
       <a-entity position="0 1.6 -3">
         <!-- Easy -->
-        <a-box position="-1 0 0" width="1" height="0.5" depth="0.1" color="green" clickable></a-box>
+        <a-box
+          position="-1 0 0"
+          width="1"
+          height="0.5"
+          depth="0.1"
+          color="green"
+          clickable
+        ></a-box>
         <a-text position="-1 0.15 0" align="center" value="Easy"></a-text>
-      
+
         <!-- Normal 버튼 -->
-        <a-box position="0 0 0" width="1" height="0.5" depth="0.1" color="yellow" clickable></a-box>
+        <a-box
+          position="0 0 0"
+          width="1"
+          height="0.5"
+          depth="0.1"
+          color="yellow"
+          clickable
+        ></a-box>
         <a-text position="0 0.15 0" align="center" value="Normal"></a-text>
-      
+
         <!-- Hard 버튼 -->
-        <a-box position="1 0 0" width="1" height="0.5" depth="0.1" color="red" clickable></a-box>
+        <a-box
+          position="1 0 0"
+          width="1"
+          height="0.5"
+          depth="0.1"
+          color="red"
+          clickable
+        ></a-box>
         <a-text position="1 0.15 0" align="center" value="Hard"></a-text>
       </a-entity>
-<script>
-  AFRAME.registerComponent("clickable", {
-    init: function () {
-      var el = this.el;
-      el.addEventListener("click", function () {
-        // 버튼이 클릭되었을 때 처리할 로직을 작성하세요.
-        var difficulty = el.getAttribute("color");
-        console.log("Selected difficulty:", difficulty);
-      });
-    }
-  });
-</script>
+      <script>
+        AFRAME.registerComponent("clickable", {
+          init: function () {
+            var el = this.el;
+            el.addEventListener("click", function () {
+              // 버튼이 클릭되었을 때 처리할 로직을 작성하세요.
+              var difficulty = el.getAttribute("color");
+              console.log("Selected difficulty:", difficulty);
+            });
+          },
+        });
+      </script>
       <a-entity
         class="target"
         target="healthPoints: 1"
@@ -285,6 +368,12 @@
         ></a-entity>
         <!-- Timer -->
         <a-entity position="-0.99 1.372 -1.914" countdown-timer></a-entity>
+
+        <!-- Score -->
+        <a-entity position="1.5 1.372 -1.914" score></a-entity>
+
+        <!-- leaderboard-->
+        <a-entity position="1.75 0 -1.914" leaderboard></a-entity>
       </a-camera>
     </a-scene>
     <!--Key board component-->
