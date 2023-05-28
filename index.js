@@ -234,6 +234,7 @@ var quizSize = 3;
 AFRAME.registerComponent("quiz-screen", {
   schema: {
     quizIndex: { type: "number", default: 0 },
+    quizCheck: { type: "number", default: 0 },
   },
   dependencies: ["material"],
   init: function () {
@@ -325,6 +326,10 @@ AFRAME.registerComponent("quiz-screen", {
       console.log("hit");
       this.el.setAttribute("quiz-screen", "quizIndex", this.data.quizIndex + 1);
       console.log(this.data.quizIndex);
+      if (this.data.quizIndex == quizSize) {
+        this.el.setAttribute("quiz-screen", "quizCheck", 1);
+        this.el.setAttribute("quiz-screen", "quizIndex", quizSize - 1);
+      }
     });
   },
 
@@ -338,6 +343,9 @@ AFRAME.registerComponent("quiz-screen", {
       this.answerA.setAttribute("value", qanswerA[this.data.quizIndex]);
       this.answerB.setAttribute("value", qanswerB[this.data.quizIndex]);
       this.question.setAttribute("value", questions[this.data.quizIndex]);
+    }
+    if (oldData.quizCheck !== data.quizCheck) {
+      console.log("quiz finished");
     }
   },
 });
