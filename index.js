@@ -221,19 +221,24 @@ AFRAME.registerComponent("shooter", {
 var korFont =
   "https://raw.githubusercontent.com/myso-kr/aframe-fonts-korean/master/fonts/ofl/nanumgothic/NanumGothic-Regular.json";
 
+var questions = [
+  "지금 너무 답답해",
+  "나 내일 면접 보러 가기로 했어",
+  "너한테 실망이야",
+];
+var qanswerA = ["담배 피우러 갈래?", "파이팅", "어의가 없네"];
+var qanswerB = ["담배 피러 갈래?", "화이팅", "어이가 없네"];
+var correctAnswer = [0, 0, 1];
+var quizSize = 3;
+
 AFRAME.registerComponent("quiz-screen", {
+  schema: {
+    quizIndex: { type: "number", default: 0 },
+  },
+  dependencies: ["material"],
   init: function () {
     // create a new content entity
-    let questions = [
-      "지금 너무 답답해",
-      "나 내일 면접 보러 가기로 했어",
-      "너한테 실망이야",
-    ];
-    let qanswerA = ["담배 피우러 갈래?", "파이팅", "어의가 없네"];
-    let qanswerB = ["담배 피러 갈래?", "화이팅", "어이가 없네"];
-    let correctAnswer = [0, 0];
-    let quizSize = 3;
-    var quizIndex = 0;
+
     var buttonA = document.createElement("a-box");
     var buttonB = document.createElement("a-box");
     var question = document.createElement("a-text");
@@ -241,6 +246,11 @@ AFRAME.registerComponent("quiz-screen", {
     var answerB = document.createElement("a-text");
     var answerAText = document.createElement("a-text");
     var answerBText = document.createElement("a-text");
+
+    //define the content
+    this.answerA = answerA;
+    this.answerB = answerB;
+    this.question = question;
 
     // set the position
     buttonA.setAttribute("position", { x: -0.8, y: 0.3, z: -3 });
@@ -264,21 +274,21 @@ AFRAME.registerComponent("quiz-screen", {
     buttonB.setAttribute("depth", "0.5");
 
     // set the question "Question: 아래 중 알맞은 것을 선택"
-    question.setAttribute("value", questions[quizIndex]);
+    question.setAttribute("value", questions[this.data.quizIndex]);
     question.setAttribute("font", korFont);
     question.setAttribute("shader", "msdf");
     question.setAttribute("color", "#000000");
     question.setAttribute("width", "4");
 
     // set the answerA
-    answerA.setAttribute("value", qanswerA[quizIndex]);
+    answerA.setAttribute("value", qanswerA[this.data.quizIndex]);
     answerA.setAttribute("font", korFont);
     answerA.setAttribute("shader", "msdf");
     answerA.setAttribute("color", "#000000");
     answerA.setAttribute("width", "4");
 
     // set the answerB
-    answerB.setAttribute("value", qanswerB[quizIndex]);
+    answerB.setAttribute("value", qanswerB[this.data.quizIndex]);
     answerB.setAttribute("font", korFont);
     answerB.setAttribute("shader", "msdf");
     answerB.setAttribute("color", "#000000");
@@ -308,5 +318,26 @@ AFRAME.registerComponent("quiz-screen", {
     this.el.sceneEl.appendChild(answerB);
     this.el.sceneEl.appendChild(answerAText);
     this.el.sceneEl.appendChild(answerBText);
+
+    //hit 판정 ??
+    var hitHandler = this.el.sceneEl.querySelector("[hit-handler]");
+    hitHandler.addEventListener("hit", () => {
+      console.log("hit");
+      this.el.setAttribute("quiz-screen", "quizIndex", this.data.quizIndex + 1);
+      console.log(this.data.quizIndex);
+    });
+  },
+
+  // if the quizIndex is changed, update the content
+  update: function (oldData) {
+    var el = this.el;
+    var data = this.data;
+    console.log("update");
+    if (oldData.quizIndex !== data.quizIndex) {
+      console.log("quizIndex changed");
+      this.answerA.setAttribute("value", qanswerA[this.data.quizIndex]);
+      this.answerB.setAttribute("value", qanswerB[this.data.quizIndex]);
+      this.question.setAttribute("value", questions[this.data.quizIndex]);
+    }
   },
 });
