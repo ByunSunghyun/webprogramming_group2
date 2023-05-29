@@ -235,24 +235,51 @@ AFRAME.registerComponent("quiz-screen", {
   schema: {
     quizIndex: { type: "number", default: 0 },
     quizCheck: { type: "number", default: 0 },
+    ans: { type: "number", default: 0 },
+
     active: { default: true },
   },
   dependencies: ["material"],
   init: function () {
     var el = this.el;
+    el.setAttribute("target", "");
     el.addEventListener("object3dset", (evt) => {
       el.sceneEl.systems.bullet.registerTarget(this, this.data.static);
     });
     // create a new content entity
 
-    var buttonA = document.createElement("a-box");
-    var buttonB = document.createElement("a-box");
+    var buttonA = document.createElement("a-entity");
+    var buttonB = document.createElement("a-entity");
     var question = document.createElement("a-text");
     var answerA = document.createElement("a-text");
     var answerB = document.createElement("a-text");
     var answerAText = document.createElement("a-text");
     var answerBText = document.createElement("a-text");
     var model = document.createElement("a-entity");
+
+    // set the target attributes
+    buttonA.setAttribute("target", "");
+    buttonB.setAttribute("target", "");
+    buttonA.setAttribute("hit-handler", "");
+    buttonB.setAttribute("hit-handler", "");
+    buttonA.classList.add("target");
+    buttonB.classList.add("target");
+    buttonA.setAttribute("target", "healthPoints: 1");
+    buttonB.setAttribute("target", "healthPoints: 1");
+    buttonA.setAttribute("geometry", {
+      primitive: "box",
+      width: 0.8,
+      height: 0.5,
+      depth: 0.5,
+    });
+    buttonB.setAttribute("geometry", {
+      primitive: "box",
+      width: 0.8,
+      height: 0.5,
+      depth: 0.5,
+    });
+
+    // set the hit event
 
     //define the content
     this.answerA = answerA;
@@ -272,15 +299,9 @@ AFRAME.registerComponent("quiz-screen", {
 
     // set the buttonA
     buttonA.setAttribute("color", "#0080FF");
-    buttonA.setAttribute("width", "0.8");
-    buttonA.setAttribute("height", "0.5");
-    buttonA.setAttribute("depth", "0.5");
 
     // set the buttonB
     buttonB.setAttribute("color", "#0080FF");
-    buttonB.setAttribute("width", "0.8");
-    buttonB.setAttribute("height", "0.5");
-    buttonB.setAttribute("depth", "0.5");
 
     // set the question "Question: 아래 중 알맞은 것을 선택"
     question.setAttribute("value", questions[this.data.quizIndex]);
@@ -334,15 +355,52 @@ AFRAME.registerComponent("quiz-screen", {
 
     //hit 판정 ??
     var hitHandler = this.el.sceneEl.querySelector("[hit-handler]");
-    hitHandler.addEventListener("hit", () => {
-      console.log("hit");
+    buttonA.addEventListener("hit", () => {
+      console.log("ahealthPoints");
+      var answ = correctAnswer[this.data.quizIndex];
+      console.log("answ", answ);
+      if (answ == 0) {
+        console.log("정답");
+      } else {
+        console.log("오답");
+        this.el.setAttribute("quiz-screen", "quizCheck", 1);
+      }
       this.el.setAttribute("quiz-screen", "quizIndex", this.data.quizIndex + 1);
-      console.log(this.data.quizIndex);
       if (this.data.quizIndex == quizSize) {
         this.el.setAttribute("quiz-screen", "quizCheck", 1);
         this.el.setAttribute("quiz-screen", "quizIndex", quizSize - 1);
       }
     });
+
+    buttonB.addEventListener("hit", () => {
+      console.log("bhealthPoints");
+      var answ = correctAnswer[this.data.quizIndex];
+      console.log(answ);
+      if (answ == 1) {
+        console.log("정답");
+      } else {
+        console.log("오답");
+        this.el.setAttribute("quiz-screen", "quizCheck", 1);
+      }
+      this.el.setAttribute("quiz-screen", "quizIndex", this.data.quizIndex + 1);
+      if (this.data.quizIndex == quizSize) {
+        this.el.setAttribute("quiz-screen", "quizCheck", 1);
+        this.el.setAttribute("quiz-screen", "quizIndex", quizSize - 1);
+      }
+    });
+    // hitHandler.addEventListener("hit", () => {
+    //   this.el.setAttribute(
+    //     "quiz-screen",
+    //     "ans",
+    //     correctAnswer[this.data.quizIndex]
+    //   );
+    //   this.el.setAttribute("quiz-screen", "quizIndex", this.data.quizIndex + 1);
+    //   console.log(this.data.quizIndex);
+    //   if (this.data.quizIndex == quizSize) {
+    //     this.el.setAttribute("quiz-screen", "quizCheck", 1);
+    //     this.el.setAttribute("quiz-screen", "quizIndex", quizSize - 1);
+    //   }
+    // });
   },
 
   // if the quizIndex is changed, update the content
@@ -350,15 +408,15 @@ AFRAME.registerComponent("quiz-screen", {
     var el = this.el;
     var data = this.data;
     console.log("update");
+    if (oldData.quizCheck !== data.quizCheck) {
+      this.el.sceneEl.appendChild(this.model);
+      console.log("quiz finished");
+    }
     if (oldData.quizIndex !== data.quizIndex) {
       console.log("quizIndex changed");
       this.answerA.setAttribute("value", qanswerA[this.data.quizIndex]);
       this.answerB.setAttribute("value", qanswerB[this.data.quizIndex]);
       this.question.setAttribute("value", questions[this.data.quizIndex]);
-    }
-    if (oldData.quizCheck !== data.quizCheck) {
-      this.el.sceneEl.appendChild(this.model);
-      console.log("quiz finished");
     }
   },
 });
