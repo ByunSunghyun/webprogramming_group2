@@ -18,11 +18,15 @@
        */
       AFRAME.registerComponent("shoot", {
         init: function () {
-          // function for spacebar to shoot
+          // function for spacebar and bbutton to shoot
           document.body.addEventListener("keydown", (event) => {
             if (event.code === "Space") {
               this.el.emit("shoot");
             }
+            const el = document.querySelector("[oculus-touch-controls]");
+            el.addEventListener("bbuttondown", () => {
+              el.emit("shoot");
+            });
           });
         },
       });
@@ -108,9 +112,12 @@
   </head>
   <body>
     <a-scene background="color: #DADADA">
+      <a-entity oculus-touch-controls="hand: left"></a-entity>
+      <a-entity oculus-touch-controls="hand: right"></a-entity>
       <a-assets>
         <a-asset-item
           id="myModel"
+          position="1 1 -2"
           src="https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/831ee455fe340b3920a81f29250664a6c4a7a32f/2.0/FlightHelmet/glTF/FlightHelmet.gltf"
         ></a-asset-item>
       </a-assets>
@@ -230,7 +237,7 @@
       >
       </a-entity> -->
 
-      <a-entity quiz-screen></a-entity>
+      <a-entity quiz-screen class="target"></a-entity>
       <a-text
         value="Quiz Screen"
         color="#000000"

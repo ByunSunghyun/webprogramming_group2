@@ -235,9 +235,14 @@ AFRAME.registerComponent("quiz-screen", {
   schema: {
     quizIndex: { type: "number", default: 0 },
     quizCheck: { type: "number", default: 0 },
+    active: { default: true },
   },
   dependencies: ["material"],
   init: function () {
+    var el = this.el;
+    el.addEventListener("object3dset", (evt) => {
+      el.sceneEl.systems.bullet.registerTarget(this, this.data.static);
+    });
     // create a new content entity
 
     var buttonA = document.createElement("a-box");
@@ -247,11 +252,13 @@ AFRAME.registerComponent("quiz-screen", {
     var answerB = document.createElement("a-text");
     var answerAText = document.createElement("a-text");
     var answerBText = document.createElement("a-text");
+    var model = document.createElement("a-entity");
 
     //define the content
     this.answerA = answerA;
     this.answerB = answerB;
     this.question = question;
+    this.model = model;
 
     // set the position
     buttonA.setAttribute("position", { x: -0.8, y: 0.3, z: -3 });
@@ -261,6 +268,7 @@ AFRAME.registerComponent("quiz-screen", {
     answerB.setAttribute("position", { x: -1, y: 1.0, z: -3 });
     answerAText.setAttribute("position", { x: -0.8, y: 0.35, z: -2.75 });
     answerBText.setAttribute("position", { x: 0.2, y: 0.35, z: -2.75 });
+    model.setAttribute("position", { x: 1, y: 0, z: -3 });
 
     // set the buttonA
     buttonA.setAttribute("color", "#0080FF");
@@ -311,6 +319,9 @@ AFRAME.registerComponent("quiz-screen", {
     answerBText.setAttribute("width", "4");
     answerBText.setAttribute("align", "center");
 
+    // set the endModel(glft)
+    model.setAttribute("gltf-model", "#myModel");
+
     // add the content to the scene
     this.el.sceneEl.appendChild(buttonA);
     this.el.sceneEl.appendChild(buttonB);
@@ -319,6 +330,7 @@ AFRAME.registerComponent("quiz-screen", {
     this.el.sceneEl.appendChild(answerB);
     this.el.sceneEl.appendChild(answerAText);
     this.el.sceneEl.appendChild(answerBText);
+    // this.el.sceneEl.appendChild(model);
 
     //hit 판정 ??
     var hitHandler = this.el.sceneEl.querySelector("[hit-handler]");
@@ -345,6 +357,7 @@ AFRAME.registerComponent("quiz-screen", {
       this.question.setAttribute("value", questions[this.data.quizIndex]);
     }
     if (oldData.quizCheck !== data.quizCheck) {
+      this.el.sceneEl.appendChild(this.model);
       console.log("quiz finished");
     }
   },
