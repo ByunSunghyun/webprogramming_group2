@@ -413,7 +413,6 @@ AFRAME.registerComponent("quiz-screen", {
     // this.el.sceneEl.appendChild(model);
 
     //hit 판정 ??
-    var hitHandler = this.el.sceneEl.querySelector("[hit-handler]");
     var updateScore = this.el.sceneEl.querySelector("[score]");
     var leaderboard = this.el.sceneEl.querySelector("[leaderboard]");
     buttonA.addEventListener("hit", () => {
@@ -463,30 +462,6 @@ AFRAME.registerComponent("quiz-screen", {
         this.el.setAttribute("quiz-screen", "quizIndex", quizSize - 1);
       }
     });
-    var el = document.querySelector("[oculus-touch-controls='hand: right']");
-    el.addEventListener("triggerdown", function (e) {
-      if (e.code == "triggerdown") {
-        el.emit("shoot");
-      }
-      el.emit("shoot");
-      console.log("shoot");
-    });
-    el.addEventListener("bbuttondown", (event) => {
-      el.emit("shoot");
-    });
-    // hitHandler.addEventListener("hit", () => {
-    //   this.el.setAttribute(
-    //     "quiz-screen",
-    //     "ans",
-    //     correctAnswer[this.data.quizIndex]
-    //   );
-    //   this.el.setAttribute("quiz-screen", "quizIndex", this.data.quizIndex + 1);
-    //   console.log(this.data.quizIndex);
-    //   if (this.data.quizIndex == quizSize) {
-    //     this.el.setAttribute("quiz-screen", "quizCheck", 1);
-    //     this.el.setAttribute("quiz-screen", "quizIndex", quizSize - 1);
-    //   }
-    // });
   },
 
   // if the quizIndex is changed, update the content

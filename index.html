@@ -14,21 +14,89 @@
         document.write('<script src="aframe-keyboard.min.js">\x3C/script>');
     </script> -->
     <script>
+      AFRAME.registerComponent("vr-controller", {
+        dependencies: ["raycaster"],
+        init: function () {
+          var updateScore = this.el.sceneEl.querySelector("[score]");
+          var shoot = this.el.sceneEl.querySelector("[shoot]");
+          console.log("vr-controller");
+          const text = document.getElementById("my_text");
+          text.setAttribute("value", "Controller is ready!?");
+
+          const emitShootEvent = () => {
+            const shootEvent = new Event("shoot");
+            this.el.dispatchEvent(shootEvent);
+          };
+
+          this.el.addEventListener("gripdown", function (e) {
+            updateScore.components.score.scoreState += 100;
+            updateScore.components.score.updateScoreDisplay();
+            shoot.components.shoot.emit("shoot");
+            text.setAttribute("value", "GripDown!!");
+          });
+          this.el.addEventListener("gripup", function (e) {
+            text.setAttribute("value", "GripUp!!");
+          });
+          this.el.addEventListener("triggerdown", function (e) {
+            updateScore.components.score.scoreState += 100;
+            updateScore.components.score.updateScoreDisplay();
+            shoot.components.shoot.emit("shoot");
+            text.setAttribute("value", "TriggerDown!!");
+          });
+          this.el.addEventListener("triggerup", function (e) {
+            text.setAttribute("value", "TriggerUp!!");
+          });
+
+          this.el.addEventListener("raycaster-intersection", function (e) {
+            text.setAttribute("value", "Intersection:captured");
+          });
+
+          this.el.addEventListener(
+            "raycaster-intersection-cleared",
+            function (e) {
+              text.setAttribute("value", "Intersection:cleared");
+            }
+          );
+        },
+      });
+      /*AFRAME.registerComponent("vr-controller", {
+        dependencies: ["raycaster"],
+        init: function () {
+          console.log("vr-controller");
+          const text = document.getElementById("my_text");
+          text.setAttribute("value", "Controller is ready!?");
+
+          this.el.addEventListener("gripdown", function (e) {
+            text.setAttribute("value", "GripDown!!");
+          });
+          this.el.addEventListener("gripup", function (e) {
+            text.setAttribute("value", "GripUp!!");
+          });
+          this.el.addEventListener("triggerdown", function (e) {
+            this.emit("shoot");
+            text.setAttribute("value", "TriggerDown!!");
+          });
+          this.el.addEventListener("triggerup", function (e) {
+            text.setAttribute("value", "TriggerUp!!");
+          });
+
+          this.el.addEventListener("raycaster-intersection", function (e) {
+            text.setAttribute("value", "Intersection:captured");
+          });
+
+          this.el.addEventListener(
+            "raycaster-intersection-cleared",
+            function (e) {
+              text.setAttribute("value", "Intersection:cleared");
+            }
+          );
+        },
+      });*/
       /**
        * shoot.
        */
       AFRAME.registerComponent("shoot", {
         init: function () {
-          const el = document.querySelector(
-            "[oculus-touch-controls='hand: right']"
-          );
-          el.addEventListener("triggerdown", function (e) {
-            el.emit("shoot");
-            console.log("shoot");
-          });
-          this.el.addEventListener("bbuttondown", (event) => {
-            this.el.emit("shoot");
-          });
           document.body.addEventListener("keydown", (event) => {
             if (event.code === "Space") {
               this.el.emit("shoot");
@@ -119,19 +187,22 @@
   <body>
     <a-scene background="color: #DADADA">
       <!--controler-->
-      <!-- <a-entity
-        id="leftHand"
-        laser-controls="hand: left"
-        raycaster="objects: .raycastable"
+      <a-entity
+        vr-controller
+        shoot
+        id="handleft"
+        laser-controls="hand: left;  handModelStyle: lowPoly; color: #ffcccc"
       ></a-entity>
       <a-entity
-        id="rightHand"
-        laser-controls="hand: right"
-        raycaster="objects: .raycastable"
-        line="color: #118A7E"
-      ></a-entity> -->
-      <a-entity oculus-touch-controls="hand: left"></a-entity>
-      <a-entity oculus-touch-controls="hand: right"></a-entity>
+        vr-controller
+        shoot
+        id="handright"
+        laser-controls="hand: right; handModelStyle: lowPoly; color: #ffcccc"
+        raycaster="objects: .collidable; showLine: true; far: 5"
+        line="color: white; opacity: 0.75;"
+      ></a-entity>
+      <!-- <a-entity oculus-touch-controls="hand: left"></a-entity>
+      <a-entity oculus-touch-controls="hand: right"></a-entity> -->
       <a-assets>
         <a-asset-item
           id="myModel"
@@ -148,6 +219,15 @@
       ></a-plane>
       <!--quiz screen-->
       <a-entity quiz-screen></a-entity>
+      <a-entity vr-controller> </a-entity>
+      <a-text
+        id="my_text"
+        value="***"
+        position="0 2 -2"
+        scale="1 1 1"
+        align="center"
+        color="#ffffff"
+      ></a-text>
 
       <!-- Score -->
       <a-entity position="1.5 1.372 -1.914" score></a-entity>
