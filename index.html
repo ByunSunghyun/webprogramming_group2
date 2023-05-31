@@ -2,6 +2,7 @@
   <head>
     <meta charset="UTF-8" />
     <title>Hangul_Game</title>
+    <meta name="description" content="360&deg;" />
     <script src="https://aframe.io/releases/1.4.1/aframe.min.js"></script>
     <script src="https://github.com/supermedium/aframe-super-shooter-kit/blob/master/dist/aframe-super-shooter-kit.min.js"></script>
     <script src="./index.js"></script>
@@ -18,15 +19,20 @@
        */
       AFRAME.registerComponent("shoot", {
         init: function () {
-          // function for spacebar and bbutton to shoot
+          const el = document.querySelector(
+            "[oculus-touch-controls='hand: right']"
+          );
+          el.addEventListener("triggerdown", function (e) {
+            el.emit("shoot");
+            console.log("shoot");
+          });
+          this.el.addEventListener("bbuttondown", (event) => {
+            this.el.emit("shoot");
+          });
           document.body.addEventListener("keydown", (event) => {
             if (event.code === "Space") {
               this.el.emit("shoot");
             }
-            const el = document.querySelector("[oculus-touch-controls]");
-            el.addEventListener("bbuttondown", () => {
-              el.emit("shoot");
-            });
           });
         },
       });
@@ -112,6 +118,18 @@
   </head>
   <body>
     <a-scene background="color: #DADADA">
+      <!--controler-->
+      <!-- <a-entity
+        id="leftHand"
+        laser-controls="hand: left"
+        raycaster="objects: .raycastable"
+      ></a-entity>
+      <a-entity
+        id="rightHand"
+        laser-controls="hand: right"
+        raycaster="objects: .raycastable"
+        line="color: #118A7E"
+      ></a-entity> -->
       <a-entity oculus-touch-controls="hand: left"></a-entity>
       <a-entity oculus-touch-controls="hand: right"></a-entity>
       <a-assets>
@@ -128,7 +146,14 @@
         rotation="-90 0 0"
         position="-3.52 -2.32 -24.8"
       ></a-plane>
+      <!--quiz screen-->
+      <a-entity quiz-screen></a-entity>
 
+      <!-- Score -->
+      <a-entity position="1.5 1.372 -1.914" score></a-entity>
+
+      <!-- leaderboard-->
+      <a-entity position="1.75 0 -1.914" leaderboard></a-entity>
       <a-text
         id="title"
         value="Hangul Spelling Game 안녕!"
@@ -217,9 +242,6 @@
         hit-handler
       ></a-entity> -->
 
-      <!-- Add gltf model-->
-      <!-- <a-entity gltf-model="#myModel" position="1 1 -2"></a-entity> -->
-
       <!-- Add Keyboard in VR-->
       <!-- <a-text
         id="input"
@@ -237,15 +259,8 @@
       >
       </a-entity> -->
 
-      <a-entity quiz-screen></a-entity>
-      <!-- <a-text
-        value="Quiz Screen"
-        color="#000000"
-        shader="msdf"
-        width="5"
-      ></a-text> -->
-
       <a-camera id="camera" wasd-controls shooter shoot>
+        <a-entity tracked-controls="controller: 0; idPrefix: OpenVR"></a-entity>
         <!-- Crosshair -->
         <a-entity
           position="0 0 -1"

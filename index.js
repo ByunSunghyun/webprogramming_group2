@@ -216,6 +216,65 @@ AFRAME.registerComponent("shooter", {
   },
 });
 
+AFRAME.registerComponent("score", {
+  schema: {
+    score: { type: "number", default: 0 },
+  },
+  init: function () {
+    this.scoreState = this.data.score;
+    this.scoreText = document.createElement("a-text");
+    this.scoreText.setAttribute("color", "black");
+    this.el.appendChild(this.scoreText);
+    this.updateScoreDisplay();
+
+    var hitHandler = this.el.sceneEl.querySelector("[hit-handler]");
+    hitHandler.addEventListener("hit", () => {
+      // this.scoreState += 100;
+      this.updateScoreDisplay();
+    });
+
+    var leaderboard = this.el.sceneEl.querySelector("[leaderboard]");
+    this.el.sceneEl.addEventListener("time-up", () => {
+      leaderboard.components.leaderboard.updateLeaderboard(this.scoreState);
+      this.scoreState = 0; // Reset the score to 0
+      this.updateScoreDisplay();
+    });
+  },
+
+  updateScoreDisplay: function () {
+    this.scoreText.setAttribute("value", "Score: " + this.scoreState);
+  },
+});
+
+//leaderboard
+AFRAME.registerComponent("leaderboard", {
+  init: function () {
+    this.leaderboard = [];
+    this.leaderboardText = document.createElement("a-text");
+    this.leaderboardText.setAttribute("color", "black");
+    this.el.appendChild(this.leaderboardText);
+  },
+  updateLeaderboard: function (score) {
+    // Add the score to the leaderboard
+    this.leaderboard.push(score);
+
+    // Sort the leaderboard in descending order
+    this.leaderboard.sort((a, b) => b - a);
+
+    // Limit the leaderboard to the top 5 scores
+    this.leaderboard = this.leaderboard.slice(0, 5);
+
+    // Generate the leaderboard text
+    var leaderboardText = "Leaderboard\n";
+    for (var i = 0; i < this.leaderboard.length; i++) {
+      leaderboardText += i + 1 + ". " + this.leaderboard[i] + "\n";
+    }
+
+    // Update the leaderboard text element
+    this.leaderboardText.setAttribute("value", leaderboardText);
+  },
+});
+
 /* solve quiz */
 
 var korFont =
@@ -355,14 +414,23 @@ AFRAME.registerComponent("quiz-screen", {
 
     //hit 판정 ??
     var hitHandler = this.el.sceneEl.querySelector("[hit-handler]");
+    var updateScore = this.el.sceneEl.querySelector("[score]");
+    var leaderboard = this.el.sceneEl.querySelector("[leaderboard]");
     buttonA.addEventListener("hit", () => {
       console.log("ahealthPoints");
       var answ = correctAnswer[this.data.quizIndex];
       console.log("answ", answ);
       if (answ == 0) {
         console.log("정답");
+        updateScore.components.score.scoreState += 100;
+        updateScore.components.score.updateScoreDisplay();
       } else {
         console.log("오답");
+        leaderboard.components.leaderboard.updateLeaderboard(
+          updateScore.components.score.scoreState
+        );
+        updateScore.components.score.scoreState = 0;
+        updateScore.components.score.updateScoreDisplay();
         this.el.setAttribute("quiz-screen", "quizCheck", 1);
       }
       this.el.setAttribute("quiz-screen", "quizIndex", this.data.quizIndex + 1);
@@ -378,8 +446,15 @@ AFRAME.registerComponent("quiz-screen", {
       console.log(answ);
       if (answ == 1) {
         console.log("정답");
+        updateScore.components.score.scoreState += 100;
+        updateScore.components.score.updateScoreDisplay();
       } else {
         console.log("오답");
+        leaderboard.components.leaderboard.updateLeaderboard(
+          updateScore.components.score.scoreState
+        );
+        updateScore.components.score.scoreState = 0;
+        updateScore.components.score.updateScoreDisplay();
         this.el.setAttribute("quiz-screen", "quizCheck", 1);
       }
       this.el.setAttribute("quiz-screen", "quizIndex", this.data.quizIndex + 1);
@@ -387,6 +462,17 @@ AFRAME.registerComponent("quiz-screen", {
         this.el.setAttribute("quiz-screen", "quizCheck", 1);
         this.el.setAttribute("quiz-screen", "quizIndex", quizSize - 1);
       }
+    });
+    var el = document.querySelector("[oculus-touch-controls='hand: right']");
+    el.addEventListener("triggerdown", function (e) {
+      if (e.code == "triggerdown") {
+        el.emit("shoot");
+      }
+      el.emit("shoot");
+      console.log("shoot");
+    });
+    el.addEventListener("bbuttondown", (event) => {
+      el.emit("shoot");
     });
     // hitHandler.addEventListener("hit", () => {
     //   this.el.setAttribute(
