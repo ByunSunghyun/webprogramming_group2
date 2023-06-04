@@ -280,14 +280,30 @@ AFRAME.registerComponent("leaderboard", {
 var korFont =
   "https://raw.githubusercontent.com/myso-kr/aframe-fonts-korean/master/fonts/ofl/nanumgothic/NanumGothic-Regular.json";
 
-var questions = [
-  "지금 너무 답답해",
-  "나 내일 면접 보러 가기로 했어",
-  "너한테 실망이야",
+var questionsH = [
+  "지금 너무 답답해H",
+  "나 내일 면접 보러 가기로 했어H",
+  "너한테 실망이야H",
 ];
-var qanswerA = ["담배 피우러 갈래?", "파이팅", "어의가 없네"];
-var qanswerB = ["담배 피러 갈래?", "화이팅", "어이가 없네"];
-var correctAnswer = [0, 0, 1];
+var qanswerAH = ["담배 피우러 갈래?", "파이팅", "어의가 없네"];
+var qanswerBH = ["담배 피러 갈래?", "화이팅", "어이가 없네"];
+var correctAnswerH = [0, 0, 1];
+var questionsM = [
+  "지금 너무 답답해M",
+  "나 내일 면접 보러 가기로 했어M",
+  "너한테 실망이야M",
+];
+var qanswerAM = ["담배 피우러 갈래?", "파이팅", "어의가 없네"];
+var qanswerBM = ["담배 피러 갈래?", "화이팅", "어이가 없네"];
+var correctAnswerM = [0, 0, 1];
+var questionsL = [
+  "지금 너무 답답해L",
+  "나 내일 면접 보러 가기로 했어L",
+  "너한테 실망이야L",
+];
+var qanswerAL = ["담배 피우러 갈래?", "파이팅", "어의가 없네"];
+var qanswerBL = ["담배 피러 갈래?", "화이팅", "어이가 없네"];
+var correctAnswerL = [0, 0, 1];
 var quizSize = 3;
 
 AFRAME.registerComponent("quiz-screen", {
@@ -295,7 +311,7 @@ AFRAME.registerComponent("quiz-screen", {
     quizIndex: { type: "number", default: 0 },
     quizCheck: { type: "number", default: 0 },
     ans: { type: "number", default: 0 },
-
+    levelIndex: { type: "number", default: 0 },
     active: { default: true },
   },
   dependencies: ["material"],
@@ -315,6 +331,13 @@ AFRAME.registerComponent("quiz-screen", {
     var answerAText = document.createElement("a-text");
     var answerBText = document.createElement("a-text");
     var model = document.createElement("a-entity");
+
+    var buttonH = document.createElement("a-entity");
+    var buttonM = document.createElement("a-entity");
+    var buttonL = document.createElement("a-entity");
+    var buttonHText = document.createElement("a-text");
+    var buttonMText = document.createElement("a-text");
+    var buttonLText = document.createElement("a-text");
 
     // set the target attributes
     buttonA.setAttribute("target", "");
@@ -337,6 +360,41 @@ AFRAME.registerComponent("quiz-screen", {
       height: 0.5,
       depth: 0.5,
     });
+    buttonA.setAttribute("visible", false);
+    answerAText.setAttribute("visible", false);
+    buttonB.setAttribute("visible", false);
+    answerBText.setAttribute("visible", false);
+
+    buttonH.setAttribute("target", "");
+    buttonM.setAttribute("target", "");
+    buttonL.setAttribute("target", "");
+    buttonH.setAttribute("hit-handler", "");
+    buttonM.setAttribute("hit-handler", "");
+    buttonL.setAttribute("hit-handler", "");
+    buttonH.classList.add("target");
+    buttonM.classList.add("target");
+    buttonL.classList.add("target");
+    buttonH.setAttribute("target", "healthPoints: 1");
+    buttonM.setAttribute("target", "healthPoints: 1");
+    buttonL.setAttribute("target", "healthPoints: 1");
+    buttonH.setAttribute("geometry", {
+      primitive: "box",
+      width: 0.9,
+      height: 0.5,
+      depth: 0.1,
+    });
+    buttonM.setAttribute("geometry", {
+      primitive: "box",
+      width: 0.9,
+      height: 0.5,
+      depth: 0.1,
+    });
+    buttonL.setAttribute("geometry", {
+      primitive: "box",
+      width: 0.9,
+      height: 0.5,
+      depth: 0.1,
+    });
 
     // set the hit event
 
@@ -354,7 +412,13 @@ AFRAME.registerComponent("quiz-screen", {
     answerB.setAttribute("position", { x: -1, y: 1.0, z: -3 });
     answerAText.setAttribute("position", { x: -0.8, y: 0.35, z: -2.75 });
     answerBText.setAttribute("position", { x: 0.2, y: 0.35, z: -2.75 });
-    model.setAttribute("position", { x: 1, y: 0, z: -3 });
+    model.setAttribute("position", { x: 2, y: 0, z: -3 });
+    buttonH.setAttribute("position", { x: 1, y: 0, z: -3 });
+    buttonM.setAttribute("position", { x: 0, y: 0, z: -3 });
+    buttonL.setAttribute("position", { x: -1, y: 0, z: -3 });
+    buttonHText.setAttribute("position", { x: 1, y: 0, z: -2.9 });
+    buttonMText.setAttribute("position", { x: 0, y: 0, z: -2.9 });
+    buttonLText.setAttribute("position", { x: -1, y: 0, z: -2.9 });
 
     // set the buttonA
     buttonA.setAttribute("color", "#0080FF");
@@ -363,21 +427,21 @@ AFRAME.registerComponent("quiz-screen", {
     buttonB.setAttribute("color", "#0080FF");
 
     // set the question "Question: 아래 중 알맞은 것을 선택"
-    question.setAttribute("value", questions[this.data.quizIndex]);
+    // question.setAttribute("value", questionsH[this.data.quizIndex]);
     question.setAttribute("font", korFont);
     question.setAttribute("shader", "msdf");
     question.setAttribute("color", "#000000");
     question.setAttribute("width", "4");
 
     // set the answerA
-    answerA.setAttribute("value", qanswerA[this.data.quizIndex]);
+    //answerA.setAttribute("value", qanswerA[this.data.quizIndex]);
     answerA.setAttribute("font", korFont);
     answerA.setAttribute("shader", "msdf");
     answerA.setAttribute("color", "#000000");
     answerA.setAttribute("width", "4");
 
     // set the answerB
-    answerB.setAttribute("value", qanswerB[this.data.quizIndex]);
+    //answerB.setAttribute("value", qanswerB[this.data.quizIndex]);
     answerB.setAttribute("font", korFont);
     answerB.setAttribute("shader", "msdf");
     answerB.setAttribute("color", "#000000");
@@ -399,6 +463,30 @@ AFRAME.registerComponent("quiz-screen", {
     answerBText.setAttribute("width", "4");
     answerBText.setAttribute("align", "center");
 
+    // set the buttonHText
+    buttonHText.setAttribute("value", "Hard");
+    buttonHText.setAttribute("font", korFont);
+    buttonHText.setAttribute("shader", "msdf");
+    buttonHText.setAttribute("color", "#000000");
+    buttonHText.setAttribute("width", "4");
+    buttonHText.setAttribute("align", "center");
+
+    // set the buttonMText
+    buttonMText.setAttribute("value", "Medium");
+    buttonMText.setAttribute("font", korFont);
+    buttonMText.setAttribute("shader", "msdf");
+    buttonMText.setAttribute("color", "#000000");
+    buttonMText.setAttribute("width", "4");
+    buttonMText.setAttribute("align", "center");
+
+    // set the buttonLText
+    buttonLText.setAttribute("value", "Low");
+    buttonLText.setAttribute("font", korFont);
+    buttonLText.setAttribute("shader", "msdf");
+    buttonLText.setAttribute("color", "#000000");
+    buttonLText.setAttribute("width", "4");
+    buttonLText.setAttribute("align", "center");
+
     // set the endModel(glft)
     model.setAttribute("gltf-model", "#myModel");
 
@@ -410,16 +498,79 @@ AFRAME.registerComponent("quiz-screen", {
     this.el.sceneEl.appendChild(answerB);
     this.el.sceneEl.appendChild(answerAText);
     this.el.sceneEl.appendChild(answerBText);
+    this.el.sceneEl.appendChild(buttonH);
+    this.el.sceneEl.appendChild(buttonM);
+    this.el.sceneEl.appendChild(buttonL);
+    this.el.sceneEl.appendChild(buttonHText);
+    this.el.sceneEl.appendChild(buttonMText);
+    this.el.sceneEl.appendChild(buttonLText);
+
     // this.el.sceneEl.appendChild(model);
 
     //hit 판정 ??
     var updateScore = this.el.sceneEl.querySelector("[score]");
     var leaderboard = this.el.sceneEl.querySelector("[leaderboard]");
+    buttonH.addEventListener("hit", () => {
+      buttonA.setAttribute("visible", true);
+      answerAText.setAttribute("visible", true);
+      buttonB.setAttribute("visible", true);
+      answerBText.setAttribute("visible", true);
+      buttonH.setAttribute("visible", false);
+      buttonM.setAttribute("visible", false);
+      buttonL.setAttribute("visible", false);
+      buttonHText.setAttribute("visible", false);
+      buttonMText.setAttribute("visible", false);
+      buttonLText.setAttribute("visible", false);
+      levelIndex = 3;
+      question.setAttribute("value", questionsH[this.data.quizIndex]);
+      answerA.setAttribute("value", qanswerAH[this.data.quizIndex]);
+      answerB.setAttribute("value", qanswerBH[this.data.quizIndex]);
+      console.log("levelIndex", levelIndex);
+    });
+    buttonM.addEventListener("hit", () => {
+      buttonA.setAttribute("visible", true);
+      answerAText.setAttribute("visible", true);
+      buttonB.setAttribute("visible", true);
+      answerBText.setAttribute("visible", true);
+      buttonH.setAttribute("visible", false);
+      buttonM.setAttribute("visible", false);
+      buttonL.setAttribute("visible", false);
+      buttonHText.setAttribute("visible", false);
+      buttonMText.setAttribute("visible", false);
+      buttonLText.setAttribute("visible", false);
+      levelIndex = 2;
+      question.setAttribute("value", questionsM[this.data.quizIndex]);
+      answerA.setAttribute("value", qanswerAM[this.data.quizIndex]);
+      answerB.setAttribute("value", qanswerBM[this.data.quizIndex]);
+      console.log("levelIndex", levelIndex);
+    });
+    buttonL.addEventListener("hit", () => {
+      buttonA.setAttribute("visible", true);
+      answerAText.setAttribute("visible", true);
+      buttonB.setAttribute("visible", true);
+      answerBText.setAttribute("visible", true);
+      buttonH.setAttribute("visible", false);
+      buttonM.setAttribute("visible", false);
+      buttonL.setAttribute("visible", false);
+      buttonHText.setAttribute("visible", false);
+      buttonMText.setAttribute("visible", false);
+      buttonLText.setAttribute("visible", false);
+      levelIndex = 1;
+      question.setAttribute("value", questionsL[this.data.quizIndex]);
+      answerA.setAttribute("value", qanswerAL[this.data.quizIndex]);
+      answerB.setAttribute("value", qanswerBL[this.data.quizIndex]);
+      console.log("levelIndex", levelIndex);
+    });
+
     buttonA.addEventListener("hit", () => {
-      console.log("ahealthPoints");
-      var answ = correctAnswer[this.data.quizIndex];
-      console.log("answ", answ);
-      if (answ == 0) {
+      if (levelIndex == 1) {
+        var answ = correctAnswerL[this.data.quizIndex];
+      } else if (levelIndex == 2) {
+        var answ = correctAnswerM[this.data.quizIndex];
+      } else if (levelIndex == 3) {
+        var answ = correctAnswerH[this.data.quizIndex];
+      }
+      if (answ == 0 && this.data.quizCheck == 0) {
         console.log("정답");
         updateScore.components.score.scoreState += 100;
         updateScore.components.score.updateScoreDisplay();
@@ -436,14 +587,31 @@ AFRAME.registerComponent("quiz-screen", {
       if (this.data.quizIndex == quizSize) {
         this.el.setAttribute("quiz-screen", "quizCheck", 1);
         this.el.setAttribute("quiz-screen", "quizIndex", quizSize - 1);
+      }
+      if (levelIndex == 1) {
+        question.setAttribute("value", questionsL[this.data.quizIndex]);
+        answerA.setAttribute("value", qanswerAL[this.data.quizIndex]);
+        answerB.setAttribute("value", qanswerBL[this.data.quizIndex]);
+      } else if (levelIndex == 2) {
+        question.setAttribute("value", questionsM[this.data.quizIndex]);
+        answerA.setAttribute("value", qanswerAM[this.data.quizIndex]);
+        answerB.setAttribute("value", qanswerBM[this.data.quizIndex]);
+      } else if (levelIndex == 3) {
+        question.setAttribute("value", questionsH[this.data.quizIndex]);
+        answerA.setAttribute("value", qanswerAH[this.data.quizIndex]);
+        answerB.setAttribute("value", qanswerBH[this.data.quizIndex]);
       }
     });
 
     buttonB.addEventListener("hit", () => {
-      console.log("bhealthPoints");
-      var answ = correctAnswer[this.data.quizIndex];
-      console.log(answ);
-      if (answ == 1) {
+      if (levelIndex == 1) {
+        var answ = correctAnswerL[this.data.quizIndex];
+      } else if (levelIndex == 2) {
+        var answ = correctAnswerM[this.data.quizIndex];
+      } else if (levelIndex == 3) {
+        var answ = correctAnswerH[this.data.quizIndex];
+      }
+      if (answ == 1 && this.data.quizCheck == 0) {
         console.log("정답");
         updateScore.components.score.scoreState += 100;
         updateScore.components.score.updateScoreDisplay();
@@ -460,6 +628,19 @@ AFRAME.registerComponent("quiz-screen", {
       if (this.data.quizIndex == quizSize) {
         this.el.setAttribute("quiz-screen", "quizCheck", 1);
         this.el.setAttribute("quiz-screen", "quizIndex", quizSize - 1);
+      }
+      if (levelIndex == 1) {
+        question.setAttribute("value", questionsL[this.data.quizIndex]);
+        answerA.setAttribute("value", qanswerAL[this.data.quizIndex]);
+        answerB.setAttribute("value", qanswerBL[this.data.quizIndex]);
+      } else if (levelIndex == 2) {
+        question.setAttribute("value", questionsM[this.data.quizIndex]);
+        answerA.setAttribute("value", qanswerAM[this.data.quizIndex]);
+        answerB.setAttribute("value", qanswerBM[this.data.quizIndex]);
+      } else if (levelIndex == 3) {
+        question.setAttribute("value", questionsH[this.data.quizIndex]);
+        answerA.setAttribute("value", qanswerAH[this.data.quizIndex]);
+        answerB.setAttribute("value", qanswerBH[this.data.quizIndex]);
       }
     });
   },
@@ -474,10 +655,7 @@ AFRAME.registerComponent("quiz-screen", {
       console.log("quiz finished");
     }
     if (oldData.quizIndex !== data.quizIndex) {
-      console.log("quizIndex changed");
-      this.answerA.setAttribute("value", qanswerA[this.data.quizIndex]);
-      this.answerB.setAttribute("value", qanswerB[this.data.quizIndex]);
-      this.question.setAttribute("value", questions[this.data.quizIndex]);
+      // console.log("quizIndex changed");
     }
   },
 });
