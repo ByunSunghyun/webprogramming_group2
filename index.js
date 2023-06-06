@@ -281,30 +281,116 @@ var korFont =
   "https://raw.githubusercontent.com/myso-kr/aframe-fonts-korean/master/fonts/ofl/nanumgothic/NanumGothic-Regular.json";
 
 var questionsH = [
-  "지금 너무 답답해H",
-  "나 내일 면접 보러 가기로 했어H",
-  "너한테 실망이야H",
+  "우리 어머니는 날마다 ( )를 쓰신다.",
+  "청소를 마치고 수돗가에서 ( )를 씻었다.",
+  "쉬는 시간에 연필을 ( ) 필통에 넣어 두었다.",
+  "영은이는 신발장에서 아버지 신벌을 ( )신었다.",
+  "내 동생 철이는 못말리는 ( )다.",
+  "산에 갈 때는 나무를 ( )않도록 주의해야 한다.",
+  "이슬비 내리는 이른 아침에 우산 셋이 ( ) 걸어갑니다.",
+  "우리는 동네 골목길을 ( ) 청소했다.",
+  "아버지는 우리가 모르는 것이 있으면 잘 ( ) 주신다.",
+  "길을 몰라서 물었더니 손가락으로 방향을 ( ).",
 ];
-var qanswerAH = ["담배 피우러 갈래?", "파이팅", "어의가 없네"];
-var qanswerBH = ["담배 피러 갈래?", "화이팅", "어이가 없네"];
-var correctAnswerH = [0, 0, 1];
+var qanswerAH = [
+  "가계부",
+  "걸래",
+  "깍아",
+  "끄내",
+  "개구쟁이",
+  "꺽지",
+  "나란이",
+  "깨끗이",
+  "가르쳐",
+  "가리켰다",
+];
+var qanswerBH = [
+  "가게부",
+  "걸레",
+  "깎아",
+  "꺼내",
+  "개구장이",
+  "꺾지",
+  "나란히",
+  "깨끗히",
+  "가리켜",
+  "가르쳤다",
+];
+var correctAnswerH = [0, 1, 1, 1, 0, 1, 1, 0, 0, 0];
 var questionsM = [
-  "지금 너무 답답해M",
-  "나 내일 면접 보러 가기로 했어M",
-  "너한테 실망이야M",
+  "나는 어머니가 만들어주신 ( )를 제일 좋아한다.",
+  "밤새 눈이 와서 산과 들이 하얗게 ( ).",
+  "( )를 함부로 꺾으면 나무가 잘 자라지 않는다.",
+  "오늘 저녁엔 라면으로 끼니를 ( ).",
+  "친구들과 ( ) 봉사활동을 가기로 했다.",
+  "( )이나 먹은 사람이 하는 짓은 꼭 철부지 같다.",
+  "올바른 방향으로 가려면 ( )을 가지고 가는 것이 좋다.",
+  "고요한 밤에 ( ) 떨어지는 소리만 들렸다.",
+  "아버지는 일요일마다 ( )하러 바닷가에 가신다.",
 ];
-var qanswerAM = ["담배 피우러 갈래?", "파이팅", "어의가 없네"];
-var qanswerBM = ["담배 피러 갈래?", "화이팅", "어이가 없네"];
-var correctAnswerM = [0, 0, 1];
+var qanswerAM = [
+  "김치찌게",
+  "뒤덮였다",
+  "나무가지",
+  "떼워야겠다",
+  "다달이",
+  "나이살",
+  "나침반",
+  "낙숫물",
+  "낙시",
+  "다분히",
+];
+var qanswerBM = [
+  "김치찌개",
+  "뒤덮혔다",
+  "나뭇가지",
+  "때워야겠다",
+  "달달이",
+  "나잇살",
+  "나침판",
+  "낙수물",
+  "낚시",
+  "다분이",
+];
+var correctAnswerM = [1, 0, 1, 1, 0, 1, 0, 0, 1, 0];
 var questionsL = [
-  "지금 너무 답답해L",
-  "나 내일 면접 보러 가기로 했어L",
-  "너한테 실망이야L",
+  "오늘 의상은 대체로 ( ).",
+  "이렇게 일찍 도착하다니, 이게 ( )이냐?",
+  "최근 수술을 받은 친구가 이제 다 ( ).",
+  "좀 전까진 날씨가 맑았는데 비가 내릴 거라고는 ( ) 못했어.",
+  "친구가 시간을 미루는 바람에 약속이 ( )났어.",
+  "창문이 다 ( )?",
+  "야, 쟤 자니까 ( ) 말해.",
+  "강수( )",
+  "잘못은 네가 해놓고 ( )나한테 화를 내면 어떡해?",
+  "( ) 사람을 잡는다.",
 ];
-var qanswerAL = ["담배 피우러 갈래?", "파이팅", "어의가 없네"];
-var qanswerBL = ["담배 피러 갈래?", "화이팅", "어이가 없네"];
-var correctAnswerL = [0, 0, 1];
-var quizSize = 3;
+var qanswerAL = [
+  "무난하다",
+  "웬일",
+  "낳았다",
+  "예상지",
+  "파투",
+  "잠궜어",
+  "소근소근",
+  "양",
+  "되려",
+  "애먼",
+];
+var qanswerBL = [
+  "문안하다",
+  "왠일",
+  "나았다",
+  "예상치",
+  "파토",
+  "잠갔어",
+  "소곤소곤",
+  "량",
+  "되레",
+  "엄한",
+];
+var correctAnswerL = [0, 0, 1, 1, 0, 1, 1, 1, 1, 0];
+var quizSize = 10;
 
 AFRAME.registerComponent("quiz-screen", {
   schema: {
@@ -576,12 +662,12 @@ AFRAME.registerComponent("quiz-screen", {
         updateScore.components.score.updateScoreDisplay();
       } else {
         console.log("오답");
-        leaderboard.components.leaderboard.updateLeaderboard(
-          updateScore.components.score.scoreState
-        );
-        updateScore.components.score.scoreState = 0;
+        // leaderboard.components.leaderboard.updateLeaderboard(
+        //   updateScore.components.score.scoreState
+        // );
+        // updateScore.components.score.scoreState = 0;
         updateScore.components.score.updateScoreDisplay();
-        this.el.setAttribute("quiz-screen", "quizCheck", 1);
+        // this.el.setAttribute("quiz-screen", "quizCheck", 1);
       }
       this.el.setAttribute("quiz-screen", "quizIndex", this.data.quizIndex + 1);
       if (this.data.quizIndex == quizSize) {
@@ -600,6 +686,13 @@ AFRAME.registerComponent("quiz-screen", {
         question.setAttribute("value", questionsH[this.data.quizIndex]);
         answerA.setAttribute("value", qanswerAH[this.data.quizIndex]);
         answerB.setAttribute("value", qanswerBH[this.data.quizIndex]);
+      }
+      if (this.data.quizCheck == 1) {
+        var x = updateScore.components.score.scoreState;
+        console.log("퀴즈 끝", x);
+        question.setAttribute("value", "Quiz is over!");
+        answerA.setAttribute("value", "Your score is");
+        answerB.setAttribute("value", x);
       }
     });
 
@@ -617,12 +710,12 @@ AFRAME.registerComponent("quiz-screen", {
         updateScore.components.score.updateScoreDisplay();
       } else {
         console.log("오답");
-        leaderboard.components.leaderboard.updateLeaderboard(
-          updateScore.components.score.scoreState
-        );
-        updateScore.components.score.scoreState = 0;
         updateScore.components.score.updateScoreDisplay();
-        this.el.setAttribute("quiz-screen", "quizCheck", 1);
+        // leaderboard.components.leaderboard.updateLeaderboard(
+        //   updateScore.components.score.scoreState
+        // );
+        // updateScore.components.score.scoreState = 0;
+        // this.el.setAttribute("quiz-screen", "quizCheck", 1);
       }
       this.el.setAttribute("quiz-screen", "quizIndex", this.data.quizIndex + 1);
       if (this.data.quizIndex == quizSize) {
@@ -642,20 +735,22 @@ AFRAME.registerComponent("quiz-screen", {
         answerA.setAttribute("value", qanswerAH[this.data.quizIndex]);
         answerB.setAttribute("value", qanswerBH[this.data.quizIndex]);
       }
+      if (this.data.quizCheck == 1) {
+        var x = updateScore.components.score.scoreState;
+        console.log("퀴즈 끝", x);
+        question.setAttribute("value", "Quiz is over!");
+        answerA.setAttribute("value", "Your score is");
+        answerB.setAttribute("value", x);
+      }
     });
   },
-
   // if the quizIndex is changed, update the content
   update: function (oldData) {
-    var el = this.el;
     var data = this.data;
-    console.log("update");
     if (oldData.quizCheck !== data.quizCheck) {
-      this.el.sceneEl.appendChild(this.model);
       console.log("quiz finished");
     }
     if (oldData.quizIndex !== data.quizIndex) {
-      // console.log("quizIndex changed");
     }
   },
 });

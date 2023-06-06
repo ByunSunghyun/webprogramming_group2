@@ -132,7 +132,7 @@
        */
       AFRAME.registerComponent("countdown-timer", {
         schema: {
-          time: { type: "number", default: 3 },
+          time: { type: "number", default: 10 },
         },
         init: function () {
           this.timeRemaining = this.data.time;
@@ -236,7 +236,7 @@
       <a-entity position="1.75 0 -1.914" leaderboard></a-entity>
       <a-text
         id="title"
-        value="Hangul Spelling Game 안녕!"
+        value="Hangul Spelling Game!"
         color="#000000"
         shader="msdf"
         font="https://raw.githubusercontent.com/myso-kr/aframe-fonts-korean/master/fonts/ofl/nanumgothic/NanumGothic-Regular.json"
