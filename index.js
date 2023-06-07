@@ -417,6 +417,7 @@ AFRAME.registerComponent("quiz-screen", {
     var answerAText = document.createElement("a-text");
     var answerBText = document.createElement("a-text");
     var model = document.createElement("a-entity");
+    var model2 = document.createElement("a-entity");
 
     var buttonH = document.createElement("a-entity");
     var buttonM = document.createElement("a-entity");
@@ -424,6 +425,8 @@ AFRAME.registerComponent("quiz-screen", {
     var buttonHText = document.createElement("a-text");
     var buttonMText = document.createElement("a-text");
     var buttonLText = document.createElement("a-text");
+
+    var judger = document.createElement("a-text");
 
     // set the target attributes
     buttonA.setAttribute("target", "");
@@ -450,6 +453,7 @@ AFRAME.registerComponent("quiz-screen", {
     answerAText.setAttribute("visible", false);
     buttonB.setAttribute("visible", false);
     answerBText.setAttribute("visible", false);
+    judger.setAttribute("visible", false);
 
     buttonH.setAttribute("target", "");
     buttonM.setAttribute("target", "");
@@ -489,6 +493,7 @@ AFRAME.registerComponent("quiz-screen", {
     this.answerB = answerB;
     this.question = question;
     this.model = model;
+    this.model2 = model2;
 
     // set the position
     buttonA.setAttribute("position", { x: -0.8, y: 0.3, z: -3 });
@@ -498,13 +503,15 @@ AFRAME.registerComponent("quiz-screen", {
     answerB.setAttribute("position", { x: -1, y: 1.0, z: -3 });
     answerAText.setAttribute("position", { x: -0.8, y: 0.35, z: -2.75 });
     answerBText.setAttribute("position", { x: 0.2, y: 0.35, z: -2.75 });
-    model.setAttribute("position", { x: 2, y: 0, z: -3 });
+    model.setAttribute("position", { x: 3, y: 0, z: -3 });
+    model2.setAttribute("position", { x: -3, y: 0, z: -3 });
     buttonH.setAttribute("position", { x: 1, y: 0, z: -3 });
     buttonM.setAttribute("position", { x: 0, y: 0, z: -3 });
     buttonL.setAttribute("position", { x: -1, y: 0, z: -3 });
     buttonHText.setAttribute("position", { x: 1, y: 0, z: -2.9 });
     buttonMText.setAttribute("position", { x: 0, y: 0, z: -2.9 });
     buttonLText.setAttribute("position", { x: -1, y: 0, z: -2.9 });
+    judger.setAttribute("position", { x: -2.34, y: 1.2, z: -3 });
 
     // set the buttonA
     buttonA.setAttribute("color", "#0080FF");
@@ -575,6 +582,19 @@ AFRAME.registerComponent("quiz-screen", {
 
     // set the endModel(glft)
     model.setAttribute("gltf-model", "#myModel");
+    model.setAttribute("rotation", { x: 0, y: 230, z: 0 });
+    model.setAttribute("scale", { x: 0.5, y: 0.5, z: 0.5 });
+
+    // set the endModel2(glft)
+    model2.setAttribute("gltf-model", "#myModel2");
+    model2.setAttribute("rotation", { x: 0, y: 30, z: 0 });
+    model2.setAttribute("scale", { x: 0.01, y: 0.01, z: 0.01 });
+
+    // set the judger
+    judger.setAttribute("font", korFont);
+    judger.setAttribute("shader", "msdf");
+    judger.setAttribute("color", "#000000");
+    judger.setAttribute("width", "4");
 
     // add the content to the scene
     this.el.sceneEl.appendChild(buttonA);
@@ -590,6 +610,9 @@ AFRAME.registerComponent("quiz-screen", {
     this.el.sceneEl.appendChild(buttonHText);
     this.el.sceneEl.appendChild(buttonMText);
     this.el.sceneEl.appendChild(buttonLText);
+    this.el.sceneEl.appendChild(model);
+    this.el.sceneEl.appendChild(model2);
+    this.el.sceneEl.appendChild(judger);
 
     // this.el.sceneEl.appendChild(model);
 
@@ -601,6 +624,7 @@ AFRAME.registerComponent("quiz-screen", {
       answerAText.setAttribute("visible", true);
       buttonB.setAttribute("visible", true);
       answerBText.setAttribute("visible", true);
+      judger.setAttribute("visible", true);
       buttonH.setAttribute("visible", false);
       buttonM.setAttribute("visible", false);
       buttonL.setAttribute("visible", false);
@@ -618,6 +642,7 @@ AFRAME.registerComponent("quiz-screen", {
       answerAText.setAttribute("visible", true);
       buttonB.setAttribute("visible", true);
       answerBText.setAttribute("visible", true);
+      judger.setAttribute("visible", true);
       buttonH.setAttribute("visible", false);
       buttonM.setAttribute("visible", false);
       buttonL.setAttribute("visible", false);
@@ -635,6 +660,7 @@ AFRAME.registerComponent("quiz-screen", {
       answerAText.setAttribute("visible", true);
       buttonB.setAttribute("visible", true);
       answerBText.setAttribute("visible", true);
+      judger.setAttribute("visible", true);
       buttonH.setAttribute("visible", false);
       buttonM.setAttribute("visible", false);
       buttonL.setAttribute("visible", false);
@@ -660,14 +686,11 @@ AFRAME.registerComponent("quiz-screen", {
         console.log("정답");
         updateScore.components.score.scoreState += 100;
         updateScore.components.score.updateScoreDisplay();
+        judger.setAttribute("value", "Correct!");
       } else {
         console.log("오답");
-        // leaderboard.components.leaderboard.updateLeaderboard(
-        //   updateScore.components.score.scoreState
-        // );
-        // updateScore.components.score.scoreState = 0;
+        judger.setAttribute("value", "Incorrect!");
         updateScore.components.score.updateScoreDisplay();
-        // this.el.setAttribute("quiz-screen", "quizCheck", 1);
       }
       this.el.setAttribute("quiz-screen", "quizIndex", this.data.quizIndex + 1);
       if (this.data.quizIndex == quizSize) {
@@ -676,16 +699,16 @@ AFRAME.registerComponent("quiz-screen", {
       }
       if (levelIndex == 1) {
         question.setAttribute("value", questionsL[this.data.quizIndex]);
-        answerA.setAttribute("value", qanswerAL[this.data.quizIndex]);
-        answerB.setAttribute("value", qanswerBL[this.data.quizIndex]);
+        answerA.setAttribute("value", "A: " + qanswerAL[this.data.quizIndex]);
+        answerB.setAttribute("value", "B: " + qanswerBL[this.data.quizIndex]);
       } else if (levelIndex == 2) {
         question.setAttribute("value", questionsM[this.data.quizIndex]);
-        answerA.setAttribute("value", qanswerAM[this.data.quizIndex]);
-        answerB.setAttribute("value", qanswerBM[this.data.quizIndex]);
+        answerA.setAttribute("value", "A: " + qanswerAL[this.data.quizIndex]);
+        answerB.setAttribute("value", "B: " + qanswerBL[this.data.quizIndex]);
       } else if (levelIndex == 3) {
         question.setAttribute("value", questionsH[this.data.quizIndex]);
-        answerA.setAttribute("value", qanswerAH[this.data.quizIndex]);
-        answerB.setAttribute("value", qanswerBH[this.data.quizIndex]);
+        answerA.setAttribute("value", "A: " + qanswerAL[this.data.quizIndex]);
+        answerB.setAttribute("value", "B: " + qanswerBL[this.data.quizIndex]);
       }
       if (this.data.quizCheck == 1) {
         var x = updateScore.components.score.scoreState;
@@ -706,16 +729,13 @@ AFRAME.registerComponent("quiz-screen", {
       }
       if (answ == 1 && this.data.quizCheck == 0) {
         console.log("정답");
+        judger.setAttribute("value", "Correct!");
         updateScore.components.score.scoreState += 100;
         updateScore.components.score.updateScoreDisplay();
       } else {
         console.log("오답");
+        judger.setAttribute("value", "Incorrect!");
         updateScore.components.score.updateScoreDisplay();
-        // leaderboard.components.leaderboard.updateLeaderboard(
-        //   updateScore.components.score.scoreState
-        // );
-        // updateScore.components.score.scoreState = 0;
-        // this.el.setAttribute("quiz-screen", "quizCheck", 1);
       }
       this.el.setAttribute("quiz-screen", "quizIndex", this.data.quizIndex + 1);
       if (this.data.quizIndex == quizSize) {
@@ -724,16 +744,16 @@ AFRAME.registerComponent("quiz-screen", {
       }
       if (levelIndex == 1) {
         question.setAttribute("value", questionsL[this.data.quizIndex]);
-        answerA.setAttribute("value", qanswerAL[this.data.quizIndex]);
-        answerB.setAttribute("value", qanswerBL[this.data.quizIndex]);
+        answerA.setAttribute("value", "A: " + qanswerAL[this.data.quizIndex]);
+        answerB.setAttribute("value", "B: " + qanswerBL[this.data.quizIndex]);
       } else if (levelIndex == 2) {
         question.setAttribute("value", questionsM[this.data.quizIndex]);
-        answerA.setAttribute("value", qanswerAM[this.data.quizIndex]);
-        answerB.setAttribute("value", qanswerBM[this.data.quizIndex]);
+        answerA.setAttribute("value", "A: " + qanswerAL[this.data.quizIndex]);
+        answerB.setAttribute("value", "B: " + qanswerBL[this.data.quizIndex]);
       } else if (levelIndex == 3) {
         question.setAttribute("value", questionsH[this.data.quizIndex]);
-        answerA.setAttribute("value", qanswerAH[this.data.quizIndex]);
-        answerB.setAttribute("value", qanswerBH[this.data.quizIndex]);
+        answerA.setAttribute("value", "A: " + qanswerAL[this.data.quizIndex]);
+        answerB.setAttribute("value", "B: " + qanswerBL[this.data.quizIndex]);
       }
       if (this.data.quizCheck == 1) {
         var x = updateScore.components.score.scoreState;
