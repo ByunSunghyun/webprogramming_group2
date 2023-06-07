@@ -70,7 +70,7 @@
        */
       AFRAME.registerComponent("countdown-timer", {
         schema: {
-          time: { type: "number", default: 10 },
+          time: { type: "number", default: 0 },
         },
         init: function () {
           this.timeRemaining = this.data.time;
