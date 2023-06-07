@@ -327,6 +327,7 @@ var questionsM = [
   "올바른 방향으로 가려면 ( )을 가지고 가는 것이 좋다.",
   "고요한 밤에 ( ) 떨어지는 소리만 들렸다.",
   "아버지는 일요일마다 ( )하러 바닷가에 가신다.",
+  "이 곳은 폭발 위험성이 ( ) 있는 지역이다.",
 ];
 var qanswerAM = [
   "김치찌게",
@@ -703,12 +704,12 @@ AFRAME.registerComponent("quiz-screen", {
         answerB.setAttribute("value", "B: " + qanswerBL[this.data.quizIndex]);
       } else if (levelIndex == 2) {
         question.setAttribute("value", questionsM[this.data.quizIndex]);
-        answerA.setAttribute("value", "A: " + qanswerAL[this.data.quizIndex]);
-        answerB.setAttribute("value", "B: " + qanswerBL[this.data.quizIndex]);
+        answerA.setAttribute("value", "A: " + qanswerAM[this.data.quizIndex]);
+        answerB.setAttribute("value", "B: " + qanswerBM[this.data.quizIndex]);
       } else if (levelIndex == 3) {
         question.setAttribute("value", questionsH[this.data.quizIndex]);
-        answerA.setAttribute("value", "A: " + qanswerAL[this.data.quizIndex]);
-        answerB.setAttribute("value", "B: " + qanswerBL[this.data.quizIndex]);
+        answerA.setAttribute("value", "A: " + qanswerAH[this.data.quizIndex]);
+        answerB.setAttribute("value", "B: " + qanswerBH[this.data.quizIndex]);
       }
       if (this.data.quizCheck == 1) {
         var x = updateScore.components.score.scoreState;
@@ -748,12 +749,12 @@ AFRAME.registerComponent("quiz-screen", {
         answerB.setAttribute("value", "B: " + qanswerBL[this.data.quizIndex]);
       } else if (levelIndex == 2) {
         question.setAttribute("value", questionsM[this.data.quizIndex]);
-        answerA.setAttribute("value", "A: " + qanswerAL[this.data.quizIndex]);
-        answerB.setAttribute("value", "B: " + qanswerBL[this.data.quizIndex]);
+        answerA.setAttribute("value", "A: " + qanswerAM[this.data.quizIndex]);
+        answerB.setAttribute("value", "B: " + qanswerBM[this.data.quizIndex]);
       } else if (levelIndex == 3) {
         question.setAttribute("value", questionsH[this.data.quizIndex]);
-        answerA.setAttribute("value", "A: " + qanswerAL[this.data.quizIndex]);
-        answerB.setAttribute("value", "B: " + qanswerBL[this.data.quizIndex]);
+        answerA.setAttribute("value", "A: " + qanswerAH[this.data.quizIndex]);
+        answerB.setAttribute("value", "B: " + qanswerBH[this.data.quizIndex]);
       }
       if (this.data.quizCheck == 1) {
         var x = updateScore.components.score.scoreState;
